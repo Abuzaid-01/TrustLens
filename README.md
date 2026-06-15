@@ -165,13 +165,11 @@ graph TD
 
 | Name | Role | GitHub Profile |
 | :--- | :--- | :--- |
-| **[Your Name]** | Lead Developer / AI Architect | [@username](https://github.com/username) |
-| **[Partner Name]** | Frontend Developer | [@username](https://github.com/username) |
+| **[Abuzaid]** | Team Leader||
 
 ---
 
 ## 🔗 Demo Links
 
-- **Working Demo Video**: [Watch Demo Video](https://youtube.com/link_to_your_video)
-- **Live Deployment Link**: [Access App Live](https://yourprojectlink.vercel.app)
-- **GitHub Repository**: [Source Code](https://github.com/username/project-repo)
+- **Live Deployment Link(FRONTEND**: [Access App Live](https://trust-lens-rho.vercel.app/)
+- **Live Deployment Link(BACKEND)**: [Access App Live](https://trustlens-ille.onrender.com)
