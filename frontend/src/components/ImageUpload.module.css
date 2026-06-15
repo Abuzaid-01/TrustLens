@@ -1,0 +1,151 @@
+/* ══════════════════════════════════════════════════════════════
+   IMAGE UPLOAD — Pulsing border, AI overlay on thumbnails
+   ══════════════════════════════════════════════════════════════ */
+
+.wrapper {
+  margin-bottom: 24px;
+}
+
+/* Drop zone */
+.dropZone {
+  position: relative;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.4s var(--ease);
+  background: rgba(255, 255, 255, 0.01);
+  overflow: hidden;
+}
+
+.dropZone:hover {
+  border-color: var(--accent);
+  background: rgba(168, 85, 247, 0.02);
+}
+
+/* Pulsing dash animation on hover */
+.dropZone:hover {
+  animation: dashPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes dashPulse {
+  0%, 100% { border-color: var(--accent); }
+  50% { border-color: rgba(168, 85, 247, 0.35); }
+}
+
+.dropActive {
+  border-color: var(--accent);
+  background: rgba(168, 85, 247, 0.04);
+  border-style: solid;
+  animation: none;
+}
+
+.dropIcon {
+  color: var(--text-3);
+  margin-bottom: 10px;
+  transition: color 0.3s;
+}
+
+.dropZone:hover .dropIcon { color: var(--accent); }
+
+.dropText {
+  font-size: 0.85rem;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+.dropAccent {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.dropHint {
+  font-size: 0.72rem;
+  color: var(--text-3);
+  margin-top: 6px;
+}
+
+/* Preview grid */
+.previewGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.previewCard {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  aspect-ratio: 1;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  group: true;
+}
+
+.previewImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s var(--ease);
+}
+
+.previewCard:hover .previewImg {
+  transform: scale(1.08);
+}
+
+/* AI overlay on hover */
+.aiOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 7, 11, 0.85);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.previewCard:hover .aiOverlay {
+  opacity: 1;
+}
+
+.aiOverlay svg {
+  color: var(--accent);
+}
+
+.aiOverlayText {
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-align: center;
+  line-height: 1.3;
+  max-width: 80%;
+}
+
+/* Remove button */
+.removeBtn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(239, 68, 68, 0.8);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 2;
+}
+
+.previewCard:hover .removeBtn { opacity: 1; }

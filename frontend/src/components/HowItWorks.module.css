@@ -1,0 +1,195 @@
+.section {
+  padding: 40px 0 48px;
+  margin-bottom: 20px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.sectionBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  background: var(--accent-dim);
+  border: 1px solid var(--border-accent);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.sectionTitle {
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-bottom: 12px;
+}
+
+.sectionDesc {
+  font-size: 0.95rem;
+  color: var(--text-2);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Timeline */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.step {
+  display: flex;
+  gap: 20px;
+}
+
+.stepLine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  width: 20px;
+}
+
+.stepDot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.connector {
+  width: 2px;
+  flex: 1;
+  background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+  min-height: 20px;
+}
+
+.stepCard {
+  flex: 1;
+  padding: 18px 20px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  margin-bottom: 12px;
+  transition: all 0.3s var(--ease);
+}
+
+.stepCard:hover {
+  background: var(--bg-glass-hover);
+  border-color: rgba(255,255,255,0.1);
+  transform: translateX(4px);
+}
+
+.stepHeader {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
+.stepIcon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid;
+  flex-shrink: 0;
+}
+
+.stepNum {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 1px;
+}
+
+.stepName {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-1);
+}
+
+.stepDesc {
+  font-size: 0.85rem;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+
+/* Flow Diagram Mini */
+.flowDiagram {
+  margin-top: 32px;
+  padding: 20px 24px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow-x: auto;
+}
+
+.flowTitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 14px;
+}
+
+.flowRow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: nowrap;
+  min-width: max-content;
+}
+
+.flowItem {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.flowNode {
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-dim);
+  border: 1px solid var(--border-accent);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.flowArrow {
+  color: var(--text-3);
+  margin: 0 6px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .stepCard { padding: 14px 16px; }
+  .stepIcon { width: 36px; height: 36px; }
+  .stepName { font-size: 0.92rem; }
+  .flowRow { gap: 0; }
+  .flowNode { padding: 4px 8px; font-size: 0.65rem; }
+}

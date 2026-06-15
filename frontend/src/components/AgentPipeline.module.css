@@ -1,0 +1,422 @@
+/* ══════════════════════════════════════════════════════════════
+   AGENT PIPELINE — DAG + Terminal Log v4
+   ══════════════════════════════════════════════════════════════ */
+
+.container {
+  padding: 32px 20px;
+}
+
+.title {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--text-2);
+  font-size: 0.85rem;
+  margin-bottom: 36px;
+}
+
+/* ── DAG Graph Container ── */
+.dagContainer {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+  min-height: 380px;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+}
+
+/* Scan-line effect */
+.scanLine {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 3px,
+    rgba(168, 85, 247, 0.015) 3px,
+    rgba(168, 85, 247, 0.015) 4px
+  );
+}
+
+.scanLine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.15), transparent);
+  animation: scanMove 4s linear infinite;
+}
+
+@keyframes scanMove {
+  0% { top: -2px; }
+  100% { top: 100%; }
+}
+
+.dagSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+/* SVG Paths */
+.pathLine {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 2;
+  stroke-linecap: round;
+  transition: stroke 0.5s;
+}
+
+.pathActive {
+  stroke: var(--accent);
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 6px var(--accent-glow));
+}
+
+.pathDone {
+  stroke: var(--green);
+  stroke-width: 2;
+}
+
+.dataPacket {
+  fill: var(--accent);
+  filter: drop-shadow(0 0 8px var(--accent-glow));
+}
+
+/* ── Agent Nodes ── */
+.nodesLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.nodeWrap {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transform: translate(-50%, -50%);
+  cursor: default;
+}
+
+.nodeCircle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.5s var(--ease);
+  backdrop-filter: blur(8px);
+  z-index: 2;
+}
+
+.nodeCircle svg {
+  color: var(--text-3);
+  transition: color 0.4s;
+}
+
+.nodeWaiting .nodeCircle {
+  border-color: var(--border);
+}
+
+.nodeActive .nodeCircle {
+  border-color: var(--accent);
+  box-shadow: 0 0 20px var(--accent-glow), 0 0 40px rgba(168, 85, 247, 0.08);
+  animation: nodeGlow 1.5s ease-in-out infinite;
+}
+
+.nodeActive .nodeCircle svg {
+  color: var(--accent);
+}
+
+@keyframes nodeGlow {
+  0%, 100% { box-shadow: 0 0 16px var(--accent-glow), 0 0 32px rgba(168, 85, 247, 0.06); }
+  50% { box-shadow: 0 0 28px var(--accent-glow), 0 0 56px rgba(168, 85, 247, 0.12); }
+}
+
+.nodeRing {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  opacity: 0;
+  animation: ringPulse 2s ease-in-out infinite;
+}
+
+.nodeActive .nodeRing {
+  opacity: 1;
+}
+
+@keyframes ringPulse {
+  0% { transform: scale(0.9); opacity: 0.6; }
+  50% { transform: scale(1.15); opacity: 0; }
+  100% { transform: scale(0.9); opacity: 0; }
+}
+
+.nodeDone .nodeCircle {
+  border-color: var(--green);
+  background: rgba(34, 197, 94, 0.08);
+  box-shadow: 0 0 16px rgba(34, 197, 94, 0.15);
+}
+
+.nodeDone .nodeCircle svg {
+  color: var(--green);
+}
+
+.burstContainer {
+  position: absolute;
+  inset: -12px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.burstRing {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid var(--green);
+  animation: burstOut 0.6s var(--ease) forwards;
+}
+
+@keyframes burstOut {
+  0% { transform: scale(0.6); opacity: 0.8; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+.nodeLabel {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-2);
+  text-align: center;
+  white-space: nowrap;
+  transition: color 0.3s;
+  max-width: 90px;
+  line-height: 1.3;
+}
+
+.nodeActive .nodeLabel { color: var(--accent); }
+.nodeDone .nodeLabel { color: var(--green); }
+
+.nodeOutput {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  color: var(--green);
+  background: rgba(34, 197, 94, 0.06);
+  border: 1px solid rgba(34, 197, 94, 0.15);
+  border-radius: var(--radius-xs);
+  padding: 2px 8px;
+  white-space: nowrap;
+  margin-top: -2px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   TERMINAL LOG — Real-time agent output
+   ══════════════════════════════════════════════════════════════ */
+
+.terminalWrap {
+  margin-top: 24px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.terminalHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+.terminalDots {
+  margin-left: auto;
+  display: flex;
+  gap: 5px;
+}
+
+.terminalDots span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.terminalBody {
+  padding: 14px 16px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  line-height: 1.8;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.terminalLine {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.termTime {
+  color: var(--text-3);
+  flex-shrink: 0;
+}
+
+.termSuccess {
+  color: var(--green);
+  flex-shrink: 0;
+}
+
+.termInfo {
+  color: var(--cyan);
+  flex-shrink: 0;
+}
+
+.termAgent {
+  color: var(--accent);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.termMsg {
+  color: var(--text-2);
+}
+
+.termCursor {
+  color: var(--accent);
+  animation: cursorBlink 1s step-end infinite;
+}
+
+@keyframes cursorBlink {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+.termProcessing {
+  color: var(--text-3);
+  font-style: italic;
+}
+
+.termComplete {
+  padding-top: 4px;
+  border-top: 1px solid rgba(34, 197, 94, 0.1);
+  margin-top: 4px;
+}
+
+/* ── Status Footer ── */
+.statusBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+  font-size: 0.78rem;
+  color: var(--text-2);
+  font-family: var(--mono);
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: dotPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MOBILE — Vertical Numbered Steps
+   ══════════════════════════════════════════════════════════════ */
+
+.mobileSteps {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .dagContainer { display: none; }
+  .mobileSteps { display: flex; flex-direction: column; gap: 0; }
+
+  .mobileStep {
+    display: flex;
+    gap: 16px;
+    padding: 16px 0;
+    position: relative;
+  }
+
+  .mobileStepLine {
+    position: absolute;
+    left: 19px;
+    top: 44px;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+
+  .mobileStep:last-child .mobileStepLine { display: none; }
+
+  .mobileStepLineActive { background: var(--accent); }
+  .mobileStepLineDone { background: var(--green); }
+
+  .mobileStepNum {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    background: var(--bg-card);
+    color: var(--text-3);
+    transition: all 0.4s;
+    position: relative;
+    z-index: 1;
+  }
+
+  .mobileStepActive .mobileStepNum {
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 12px var(--accent-glow);
+  }
+
+  .mobileStepDone .mobileStepNum {
+    border-color: var(--green);
+    color: var(--green);
+    background: rgba(34, 197, 94, 0.08);
+  }
+
+  .mobileStepBody { flex: 1; }
+  .mobileStepName { font-size: 0.85rem; font-weight: 600; margin-bottom: 2px; }
+  .mobileStepStatus { font-size: 0.72rem; color: var(--text-3); font-family: var(--mono); }
+}

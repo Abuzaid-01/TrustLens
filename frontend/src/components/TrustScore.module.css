@@ -1,0 +1,433 @@
+/* ══════════════════════════════════════════════════════════════
+   TRUST SCORE — Results Page v4
+   Verdict card, orbital ring, radar chart, breakdown
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Verdict Card ── */
+.verdictCard {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 24px 28px;
+  border-radius: var(--radius-xl);
+  margin-bottom: 28px;
+  border: 1px solid;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated gradient shimmer on verdict card */
+.verdictCard::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+  animation: shimmerSweep 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.verdictHigh {
+  background: rgba(34, 197, 94, 0.06);
+  border-color: rgba(34, 197, 94, 0.18);
+}
+
+.verdictMedium {
+  background: rgba(245, 158, 11, 0.06);
+  border-color: rgba(245, 158, 11, 0.18);
+}
+
+.verdictLow {
+  background: rgba(239, 68, 68, 0.06);
+  border-color: rgba(239, 68, 68, 0.18);
+}
+
+.verdictIcon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.verdictHigh .verdictIcon { background: rgba(34, 197, 94, 0.12); color: var(--green); }
+.verdictMedium .verdictIcon { background: rgba(245, 158, 11, 0.12); color: var(--amber); }
+.verdictLow .verdictIcon { background: rgba(239, 68, 68, 0.12); color: var(--red); }
+
+.verdictBody { flex: 1; }
+
+.verdictLevel {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.verdictHigh .verdictLevel { color: var(--green); }
+.verdictMedium .verdictLevel { color: var(--amber); }
+.verdictLow .verdictLevel { color: var(--red); }
+
+.verdictText {
+  font-size: 0.82rem;
+  color: var(--text-2);
+  margin-top: 2px;
+  line-height: 1.5;
+}
+
+.verdictBadge {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+}
+
+/* ── Score Ring Area ── */
+.scoreArea {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.ringContainer {
+  position: relative;
+  width: 190px;
+  height: 190px;
+  flex-shrink: 0;
+}
+
+/* Pulsing glow behind ring */
+.ringGlow {
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  animation: ringGlowPulse 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes ringGlowPulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* Orbital particles */
+.orbitalWrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.orbitalDot {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform-origin: 0 0;
+  animation: orbit 4.8s linear infinite;
+}
+
+@keyframes orbit {
+  0% { transform: rotate(0deg) translateX(85px) rotate(0deg) scale(1); opacity: 0.8; }
+  25% { opacity: 1; transform: rotate(90deg) translateX(85px) rotate(-90deg) scale(1.2); }
+  50% { opacity: 0.6; transform: rotate(180deg) translateX(85px) rotate(-180deg) scale(0.8); }
+  75% { opacity: 1; transform: rotate(270deg) translateX(85px) rotate(-270deg) scale(1.1); }
+  100% { transform: rotate(360deg) translateX(85px) rotate(-360deg) scale(1); opacity: 0.8; }
+}
+
+.ring {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.ringBg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.04);
+  stroke-width: 6;
+}
+
+.ringFill {
+  fill: none;
+  stroke-width: 6;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+              stroke 0.4s;
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+.scoreValue {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.scoreNum {
+  font-family: var(--font-display);
+  font-size: 3.2rem;
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1;
+}
+
+.scoreSuffix {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--text-3);
+  margin-top: 2px;
+}
+
+/* ── Radar Chart ── */
+.radarContainer {
+  width: 200px;
+  height: 200px;
+  flex-shrink: 0;
+}
+
+.radarSvg {
+  width: 100%;
+  height: 100%;
+}
+
+.radarGridLine {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.05);
+  stroke-width: 0.5;
+}
+
+.radarAxis {
+  stroke: rgba(255, 255, 255, 0.06);
+  stroke-width: 0.5;
+}
+
+.radarArea {
+  fill: rgba(168, 85, 247, 0.12);
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  transition: all 0.8s var(--ease);
+}
+
+.radarDot {
+  fill: var(--accent);
+  stroke: var(--bg-primary);
+  stroke-width: 2;
+}
+
+.radarLabel {
+  font-size: 3.2px;
+  fill: var(--text-3);
+  font-family: var(--font);
+  text-anchor: middle;
+}
+
+/* ── Section headers ── */
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.sectionSub {
+  font-size: 0.78rem;
+  color: var(--text-3);
+  margin-bottom: 20px;
+}
+
+/* ── Breakdown Grid ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.breakdownCard {
+  background: rgba(255, 255, 255, 0.018);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  transition: all 0.3s var(--ease);
+}
+
+.breakdownCard:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.03);
+  transform: translateY(-1px);
+}
+
+.breakdownLabel {
+  font-size: 0.75rem;
+  color: var(--text-2);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.breakdownRow {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.breakdownPts {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.breakdownMax {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--text-3);
+}
+
+.bar {
+  height: 5px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--accent);
+}
+
+/* ── Vision Card ── */
+.visionCard {
+  background: rgba(168, 85, 247, 0.04);
+  border: 1px solid rgba(168, 85, 247, 0.12);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.visionTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+
+.visionRow {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 10px;
+  font-size: 0.82rem;
+}
+
+.visionRow:last-child { margin-bottom: 0; }
+
+.visionLabel {
+  color: var(--text-3);
+  min-width: 100px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.visionVal {
+  color: var(--text-1);
+  line-height: 1.5;
+}
+
+/* ── Recommendation Card ── */
+.recCard {
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.recCard h4 {
+  font-size: 0.88rem;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.recCard p {
+  font-size: 0.82rem;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+
+/* ── Enhanced Confetti ── */
+.confettiWrap {
+  position: relative;
+  overflow: visible;
+}
+
+.confettiPiece {
+  position: absolute;
+  pointer-events: none;
+  animation: confetti-drop 1.4s var(--ease) forwards;
+}
+
+.confetti_circle {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.confetti_rect {
+  width: 5px;
+  height: 8px;
+  border-radius: 1px;
+}
+
+.confetti_diamond {
+  width: 7px;
+  height: 7px;
+  border-radius: 1px;
+  transform: rotate(45deg);
+}
+
+@keyframes confetti-drop {
+  0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+  60% { opacity: 1; }
+  100% { transform: translateY(120px) rotate(540deg) scale(0); opacity: 0; }
+}
+
+/* ── DB Badge ── */
+.dbBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  background: rgba(168, 85, 247, 0.08);
+  border: 1px solid var(--border-accent);
+  color: var(--accent);
+  margin-top: 8px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .scoreArea { flex-direction: column; gap: 24px; }
+  .radarContainer { width: 180px; height: 180px; }
+  .grid { grid-template-columns: 1fr; }
+  .verdictCard { flex-direction: column; text-align: center; padding: 20px; }
+  .orbitalDot { display: none; }
+}

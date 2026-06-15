@@ -1,0 +1,15 @@
+# Python dependencies
+fastapi
+uvicorn[standard]
+python-dotenv
+python-multipart
+pydantic
+aiofiles
+Pillow
+
+# LangChain ecosystem
+langchain>=0.3.0
+langchain-core>=0.3.0
+langchain-groq>=0.2.0
+langgraph>=0.2.0
+langsmith>=0.1.0
