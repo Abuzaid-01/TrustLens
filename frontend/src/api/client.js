@@ -1,4 +1,4 @@
-const API = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+const API = import.meta.env.VITE_API_URL || 'https://trustlens-ille.onrender.com';
 
 export async function lookupOrder(orderId) {
   const res = await fetch(`${API}/api/orders/lookup?order_id=${encodeURIComponent(orderId)}`);

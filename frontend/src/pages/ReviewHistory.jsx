@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { Search, RefreshCw } from 'lucide-react'
 import styles from './ReviewHistory.module.css'
 
-const API = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000'
+const API = import.meta.env.VITE_API_URL || 'https://trustlens-ille.onrender.com'
 
 export default function ReviewHistory() {
   const [reviews, setReviews] = useState([])

@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Hash, Check, X, Calendar, DollarSign, Package } from 'lucide-react'
 import styles from './OrderValidator.module.css'
 
-const API = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000'
+const API = import.meta.env.VITE_API_URL || 'https://trustlens-ille.onrender.com'
 
 export default function OrderValidator({ onValidated }) {
   const [orderId, setOrderId] = useState('')

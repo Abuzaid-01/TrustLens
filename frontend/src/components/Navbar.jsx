@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, FileText, BarChart3, Home } from 'lucide-react'
 import styles from './Navbar.module.css'
 
-const API = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000'
+const API = import.meta.env.VITE_API_URL || 'https://trustlens-ille.onrender.com'
 
 export default function Navbar({ tab, onNavigate }) {
   const [online, setOnline] = useState(true)
